@@ -1,0 +1,11 @@
+# This file helps Render auto-deploy your Python backend from GitHub
+# Place this in your repository root
+
+# Build Command (Render will run this)
+build: cd backend && pip install -r requirements.txt
+
+# Start Command (How to run your app)
+start: cd backend && python app.py
+
+# Environment
+python_version: 3.9

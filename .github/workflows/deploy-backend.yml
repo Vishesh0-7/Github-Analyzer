@@ -1,0 +1,63 @@
+name: Deploy Backend
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+  workflow_dispatch:
+
+jobs:
+  deploy-railway:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Install dependencies
+      run: |
+        cd backend
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Run tests (if you have any)
+      run: |
+        cd backend
+        # python -m pytest tests/ || true
+        
+    - name: Deploy to Railway
+      uses: railwayapp/cli@v3
+      with:
+        command: up --service backend
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+  # Alternative: Deploy to Heroku
+  # deploy-heroku:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v4
+  #   - name: Deploy to Heroku
+  #     uses: akhileshns/heroku-deploy@v3.12.14
+  #     with:
+  #       heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+  #       heroku_app_name: "your-app-name"
+  #       heroku_email: "your-email@example.com"
+  #       appdir: "backend"
+
+  # Alternative: Deploy to Render
+  # deploy-render:
+  #   runs-on: ubuntu-latest  
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v4
+  #   - name: Deploy to Render
+  #     run: |
+  #       curl -X POST "https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}"

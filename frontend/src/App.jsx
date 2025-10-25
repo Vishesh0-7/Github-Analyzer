@@ -23,6 +23,8 @@ export default function App(){
     setCurrentUser('')
   }
 
+  const BASE_URL = "https://github-analyzer-sg31.onrender.com";
+
   const handleAnalyze = async (username)=>{
     setLoading(true)
     setError(null)
@@ -30,7 +32,7 @@ export default function App(){
     setView('loading')
     setCurrentUser(username)
     try{
-      const res = await axios.get(`http://localhost:5000/api/analyze/${username}`)
+      const res =  await axios.get(`${BASE_URL}/api/analyze/${username}`)
   setData(res.data)
       setView('results')
     }catch(e){

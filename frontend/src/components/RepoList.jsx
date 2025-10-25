@@ -13,7 +13,7 @@ export default function RepoList({ username, onClose }){
   useEffect(()=>{
     let cancelled = false
     setLoading(true); setError(null); setRepos([])
-    axios.get(`http://localhost:5000/repos/${username}`)
+    axios.get(`http://localhost:5000/api/repos/${username}`)
       .then(res=>{ if(!cancelled){ setRepos(res.data || []) }})
       .catch(err=>{
         if(cancelled) return
@@ -31,7 +31,7 @@ export default function RepoList({ username, onClose }){
     setLoadingReadme(true)
     setReadme('')
     setReadmeError(null)
-    axios.get(`http://localhost:5000/readme/${username}/${repoName}`)
+    axios.get(`http://localhost:5000/api/readme/${username}/${repoName}`)
       .then(res=> setReadme(res.data?.readme || ''))
       .catch(err=>{
         const status = err.response?.status

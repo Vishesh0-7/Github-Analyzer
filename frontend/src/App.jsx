@@ -30,7 +30,7 @@ export default function App(){
     setView('loading')
     setCurrentUser(username)
     try{
-      const res = await axios.get(`http://localhost:5000/analyze/${username}`)
+      const res = await axios.get(`http://localhost:5000/api/analyze/${username}`)
   setData(res.data)
       setView('results')
     }catch(e){

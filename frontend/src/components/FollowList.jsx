@@ -12,8 +12,8 @@ export default function FollowList({ username, type, onClose, onSelectUser }){
     setError(null)
     setItems([])
     const url = type === 'followers'
-      ? `http://localhost:5000/followers/${username}`
-      : `http://localhost:5000/following/${username}`
+      ? `http://localhost:5000/api/followers/${username}`
+      : `http://localhost:5000/api/following/${username}`
     axios.get(url)
       .then(res=>{ if(!cancelled){ setItems(res.data || []) } })
       .catch(err=>{ 

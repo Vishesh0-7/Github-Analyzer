@@ -1,7 +1,7 @@
 import os
 from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
-from backend.services.github_api import (
+from services.github_api import (
     get_repos,
     get_languages,
     get_commit_activity,

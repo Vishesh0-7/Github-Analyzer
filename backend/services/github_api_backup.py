@@ -2,31 +2,12 @@ import os
 import requests
 from datetime import datetime, timedelta
 
-def _get_valid_headers():
-    """Get headers with token only if it's valid, otherwise use no auth"""
-    token = os.getenv('GITHUB_TOKEN')
-    headers = {'Accept': 'application/vnd.github.v3+json'}
-    
-    # Only add Authorization if token exists and seems valid
-    if token and len(token) > 10:
-        # Test the token first with a simple API call
-        test_url = 'https://api.github.com/user'
-        test_headers = headers.copy()
-        test_headers['Authorization'] = f'token {token}'
-        try:
-            test_response = requests.get(test_url, headers=test_headers, timeout=5)
-            if test_response.status_code in [200, 401]:  # 401 means token format is OK but invalid
-                if test_response.status_code == 200:
-                    headers['Authorization'] = f'token {token}'
-                # If 401, we skip the token and use no auth (rate limited but working)
-        except:
-            pass  # If test fails, just use no auth
-    
-    return headers
-
 def get_repos(username):
     url = f'https://api.github.com/users/{username}/repos?per_page=100'
-    headers = _get_valid_headers()
+    token = os.getenv('GITHUB_TOKEN')
+    headers = {'Accept': 'application/vnd.github.v3+json'}
+    if token:
+        headers['Authorization'] = f'token {token}'
     try:
         r = requests.get(url, timeout=10, headers=headers)
         if r.status_code != 200:
@@ -51,7 +32,10 @@ def get_commit_activity(username, repos):
     start_date = start_dt.date()
     counts = [0] * 7
     repo_counts = {}
-    headers = _get_valid_headers()
+    token = os.getenv('GITHUB_TOKEN')
+    headers = {'Accept': 'application/vnd.github.v3+json'}
+    if token:
+        headers['Authorization'] = f'token {token}'
 
     for repo in repos:
         name = repo.get('name')
@@ -93,7 +77,10 @@ def get_user_profile(username):
     status_code will be 200 on success; otherwise 404 (not found), 403 (rate limit), or other upstream code.
     """
     url = f'https://api.github.com/users/{username}'
-    headers = _get_valid_headers()
+    token = os.getenv('GITHUB_TOKEN')
+    headers = {'Accept': 'application/vnd.github.v3+json'}
+    if token:
+        headers['Authorization'] = f'token {token}'
     try:
         r = requests.get(url, timeout=10, headers=headers)
         if r.status_code != 200:
@@ -114,7 +101,11 @@ def get_user_profile(username):
 
 
 def _auth_headers():
-    return _get_valid_headers()
+    token = os.getenv('GITHUB_TOKEN')
+    headers = {'Accept': 'application/vnd.github.v3+json'}
+    if token:
+        headers['Authorization'] = f'token {token}'
+    return headers
 
 
 def get_followers(username):

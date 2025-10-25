@@ -1,6 +1,7 @@
 import os
 from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
+from dotenv import load_dotenv
 from services.github_api import (
     get_repos,
     get_languages,
@@ -11,6 +12,9 @@ from services.github_api import (
     get_user_repos_list,
     get_readme
 )
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Serve React build folder
 app = Flask(__name__, static_folder="frontend/build", static_url_path="")

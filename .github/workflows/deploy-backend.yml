@@ -35,6 +35,8 @@ jobs:
     - name: Trigger Render Deploy
       run: |
         curl -X POST "https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # Alternative: Deploy to Railway
   # deploy-railway:

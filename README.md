@@ -73,39 +73,63 @@ github-analyzer/
 
 Prerequisites:
 
-- Node.js (LTS) and npm
-- Optional: Python 3.10+ for the local Flask backend
+- Node.js (LTS) and npm  
+- Python 3.9+ for the Flask backend
 
-Clone the repository:
+### Quick Setup
 
-```powershell
-# PowerShell
-git clone <your-repo-url> github-analyzer
-cd github-analyzer
+1. **Clone the repository:**
+```bash
+git clone https://github.com/Vishesh0-7/Github-Analyzer.git
+cd Github-Analyzer
 ```
 
-Install and run the frontend (React + Tailwind):
+2. **Setup GitHub Token (Important!):**
+```bash
+# Run the setup script for easy configuration
+python setup.py
 
-```powershell
+# OR manually create backend/.env with:
+# GITHUB_TOKEN=your_github_token_here
+```
+
+3. **Install and run the backend:**
+```bash
+cd backend
+pip install -r requirements.txt
+python app.py
+```
+
+4. **Install and run the frontend:**
+```bash
 cd frontend
 npm install
 npm start
 ```
 
-Build for production:
+### GitHub Token Setup
 
-```powershell
-cd frontend
-npm run build
+To avoid rate limits, you need a GitHub Personal Access Token:
+
+1. Go to [GitHub Settings → Tokens](https://github.com/settings/tokens)
+2. Generate new token → Token (classic)
+3. Select scope: `public_repo` (or `repo` for private repos)
+4. Copy the token and add it to `backend/.env`:
+
+```env
+GITHUB_TOKEN=your_token_here
 ```
 
-Optional: Run the local backend API (Flask):
+### Production Build
 
-```powershell
+```bash
+# Frontend build
+cd frontend
+npm run build
+
+# Backend with environment
 cd backend
-pip install -r requirements.txt
-$env:FLASK_APP = 'app.py'
-flask run
+python app.py
 ```
 
 Optional: Avoid GitHub rate limits using a Personal Access Token (no scopes required):

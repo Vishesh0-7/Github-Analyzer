@@ -9,8 +9,8 @@ yarn-error.log*
 # Build outputs
 dist/
 # Ignore build/ unless you intentionally want built assets tracked
-build/
-frontend/build/
+# build/
+# frontend/build/
 
 # Python
 __pycache__/
